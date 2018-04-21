@@ -26,21 +26,27 @@ export class CommentComponent implements OnInit {
   }
 
   newComment() {
-    const comment = {
-      text: this.commentText,
-      postId: -1,
-      commentId: -1
-    };
-    if (this.post) {
-      comment.postId = this.superId;
-    } else {
-      comment.commentId = this.superId;
+    if (this.redditApi.isLoggedIn()) {
+      const comment = {
+        text: this.commentText,
+        postId: -1,
+        commentId: -1
+      };
+      if (this.post) {
+        comment.postId = this.superId;
+      } else {
+        comment.commentId = this.superId;
+      }
+      this.redditApi.createComment(comment).subscribe((res) => {
+        this.comment.push(res.data);
+        this.commentText = '';
+        this.reply = this.post;
+      });
     }
-    this.redditApi.createComment(comment).subscribe((res) => {
-      this.comment.push(res.data);
-      this.commentText = '';
-      this.reply = false;
-    });
+  }
+
+  isLoggedIn() {
+    return this.redditApi.isLoggedIn();
   }
 
   vote(comment: Comment, value: number) {

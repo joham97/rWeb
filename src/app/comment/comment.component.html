@@ -2,11 +2,13 @@
   <tr>
     <td width="100%" margin="0px" padding="0px">
       <mat-form-field width="100%" style="display: block;">
-        <input matInput width="100%" placeholder="Write a comment..." type="text" [(ngModel)]="commentText">
+        <input *ngIf="isLoggedIn()" matInput width="100%" placeholder="Write a comment..." type="text" [(ngModel)]="commentText">
+        <input *ngIf="!isLoggedIn()" disabled matInput width="100%" placeholder="Login to write a comment..." type="text" [(ngModel)]="commentText">
       </mat-form-field>
     </td>
     <td margin="0px" padding="0px">
-      <button mat-raised-button (click)="newComment()">Send</button>
+      <button *ngIf="isLoggedIn()" mat-raised-button (click)="newComment()">Send</button>
+      <button *ngIf="!isLoggedIn()" disabled mat-raised-button (click)="newComment()">Send</button>
     </td>
   </tr>
 </table>

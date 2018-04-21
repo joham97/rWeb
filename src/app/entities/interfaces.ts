@@ -24,7 +24,7 @@ export interface Comment {
     upvotes: number;
     downvotes: number;
     yourvote: number;
-    comments: Comment[];
+    comment: Comment[];
     reply: boolean;
     collapse: boolean;
 }
