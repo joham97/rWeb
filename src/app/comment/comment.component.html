@@ -1,0 +1,77 @@
+<table *ngIf="reply" width="100%">
+  <tr>
+    <td width="100%" margin="0px" padding="0px">
+      <mat-form-field width="100%" style="display: block;">
+        <input matInput width="100%" placeholder="Write a comment..." type="text" [(ngModel)]="commentText">
+      </mat-form-field>
+    </td>
+    <td margin="0px" padding="0px">
+      <button mat-raised-button (click)="newComment()">Send</button>
+    </td>
+  </tr>
+</table>
+<table *ngIf="comment" width="100%">
+  <tr *ngFor="let entry of comment; let i = index" width="100%">
+    <td>
+      <!-- <mat-card> -->
+        <table width="100%">
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <table style="text-align: center">
+                <tr (click)="vote(entry, 1)">
+                  <td>
+                    <img *ngIf="entry.yourvote == 1" src="assets/upvote-clicked.png" width="16px" height="16px">
+                    <img *ngIf="entry.yourvote != 1" src="assets/upvote.png" width="16px" height="16px">
+                  </td>
+                </tr>
+                <tr>
+                  {{entry.upvotes - entry.downvotes}}
+                </tr>
+                <tr (click)="vote(entry, -1)">
+                  <td>
+                    <img *ngIf="entry.yourvote == -1" src="assets/downvote-clicked.png" width="16px" height="16px">
+                    <img *ngIf="entry.yourvote != -1" src="assets/downvote.png" width="16px" height="16px">
+                  </td>
+                </tr>
+              </table>
+            </td>
+            <td width="100%">
+              <table>
+                <tr>
+                  <a>
+                    {{entry.text}}
+                  </a>
+                </tr>
+                <tr>
+                  von
+                  <a class="link underline">{{entry.user}}</a>
+                  &nbsp;
+                  <a (click)="switchReply(entry)" class="link underline">Reply</a>
+                  &nbsp;
+                  <a *ngIf="!entry.collapse && (entry.comment && entry.comment.length > 0)" (click)="switchCollapse(entry)" class="link">[-]</a>
+                  <a *ngIf="entry.collapse && (entry.comment && entry.comment.length > 0)" (click)="switchCollapse(entry)" class="link">[+] {{entry.comment.length}} Comments</a>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <ng-container *ngIf="((entry.comment && entry.comment.length > 0) || entry.reply) && !entry.collapse">
+            <tr>
+              <td style="border-right: thin solid #aaa;"></td>
+              <td style="border-left: thin solid #aaa;"></td>
+              <!-- <td></td>
+              <td></td> -->
+              <td width="100%">
+                <app-comment [comment]="entry.comment" [reply]="entry.reply" [post]="false" [superId]="entry.id"></app-comment>
+              </td>
+            </tr>
+          </ng-container>
+        </table>
+      <!-- </mat-card> -->
+    </td>
+  </tr>
+</table>

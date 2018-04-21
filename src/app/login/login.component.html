@@ -1,0 +1,72 @@
+<mat-tab-group>
+
+  <mat-tab label="Login">
+    <table>
+      <tr>
+        <td>
+          <mat-input-container>
+            <input matInput placeholder="Username" [(ngModel)]="username" (keypress)="keypressLogin($event.keyCode)">
+          </mat-input-container>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <mat-input-container>
+            <input matInput type="password" placeholder="Passwort" [(ngModel)]="password" (keypress)="keypressLogin($event.keyCode)">
+          </mat-input-container>
+        </td>
+      </tr>
+      <ng-container *ngIf="msgFailed">
+        <tr>
+          <td>
+            <span class="error-message">{{ msgFailed }}</span>
+          </td>
+        </tr>
+      </ng-container>
+    </table>
+    <br>
+    <div>
+      <button mat-raised-button color="primary" (click)="login()">Login</button>
+      <button mat-raised-button color="primary" (click)="cancel()">Abbrechen</button>
+    </div>
+  </mat-tab>
+
+  <mat-tab label="Registrieren">
+    <table>
+      <tr>
+        <td>
+          <mat-input-container>
+            <input matInput placeholder="Username" [(ngModel)]="username" (keypress)="keypressRegister($event.keyCode)">
+          </mat-input-container>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <mat-input-container>
+            <input matInput type="password" placeholder="Passwort" [(ngModel)]="password" (keypress)="keypressRegister($event.keyCode)">
+          </mat-input-container>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <mat-input-container>
+            <input matInput type="password" placeholder="Passwort bestätigen" [(ngModel)]="passwordSubmit" (keypress)="keypressRegister($event.keyCode)">
+          </mat-input-container>
+        </td>
+      </tr>
+      <ng-container *ngIf="msgFailed">
+        <tr>
+          <td>
+            <span class="error-message">{{ msgFailed }}</span>
+          </td>
+        </tr>
+      </ng-container>
+    </table>
+    <br>
+    <div>
+      <button mat-raised-button color="primary" (click)="register()">Registrieren</button>
+      <button mat-raised-button color="primary" (click)="cancel()">Abbrechen</button>
+    </div>
+  </mat-tab>
+
+</mat-tab-group>

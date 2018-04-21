@@ -1,0 +1,34 @@
+<ul>
+    <div>
+        <li>
+            <a>/r/dev</a>
+        </li>
+        <li>
+            <a *ngIf="new" style="background: #FF8933;">New</a>
+            <a *ngIf="!new" class="clickable" style="cursor: pointer;"  (click)="newPage()">New</a>
+        </li>
+        <li>
+            <a *ngIf="hot" style="background: #FF8933;">Hot</a>
+            <a *ngIf="!hot" class="clickable" style="cursor: pointer;" (click)="hotPage()">Hot</a>
+        </li>
+        <li style="float: right;">
+            <div *ngIf="!isLoggedIn()">
+                <a class="clickable" (click)="login()">Login</a>
+            </div>
+            <div *ngIf="isLoggedIn()">
+                <a class="clickable" [matMenuTriggerFor]="menu3">{{user.username}}</a>
+                <mat-menu #menu3="matMenu">
+                    <button mat-menu-item (click)="myPosts()">Meine Posts</button>
+                    <button mat-menu-item (click)="logout()">Logout</button>
+                </mat-menu>
+            </div>
+        </li>
+        <li style="float: right;" (click)="upload()">
+            <div *ngIf="isLoggedIn()">
+                <a *ngIf="uploadPage" style="background: #FF8933;">Upload</a>
+                <a *ngIf="!uploadPage" class="clickable">Upload</a>
+            </div>
+        </li>
+    </div>
+</ul>
+<router-outlet></router-outlet>

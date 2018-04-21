@@ -1,0 +1,35 @@
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #FFA953
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.clickable:hover {
+    background: #FF8933;
+}
+
+.fill-remaining-space {
+    /* this fills the remaining space, by using flexbox. 
+    / every toolbar row uses a flexbox row layout.*/
+    flex: 1 1 auto;
+}
+
+.menu {
+    padding: 8px;
+    border-radius: 12px;
+    color: white;
+}

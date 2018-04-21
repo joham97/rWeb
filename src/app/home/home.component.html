@@ -1,0 +1,59 @@
+<table>
+  <tr *ngFor="let post of data; let i = index">
+    <div>
+      <table>
+        <tr>
+          <td>
+            <a style="font-size: 26px;">
+              {{i + 1}}
+            </a>
+          </td>
+          <td>
+            <table style="text-align: center">
+              <tr (click)="vote(post, 1)">
+                <img *ngIf="post.yourvote == 1" src="assets/upvote-clicked.png" width="16px" height="16px">
+                <img *ngIf="post.yourvote != 1" src="assets/upvote.png" width="16px" height="16px">
+              </tr>
+              <tr>
+                {{post.upvotes - post.downvotes}}
+              </tr>
+              <tr (click)="vote(post, -1)">
+                <img *ngIf="post.yourvote == -1" src="assets/downvote-clicked.png" width="16px" height="16px">
+                <img *ngIf="post.yourvote != -1" src="assets/downvote.png" width="16px" height="16px">
+              </tr>
+            </table>
+          </td>
+          <td *ngIf="post.path" style="width: 64px" (click)="makeBig(post)">
+            <img [src]="post.path" style="max-width: 64px; max-height: 64px">
+          </td>
+          <td>
+            <table>
+              <tr>
+                <a style="font-size: 24px;" (click)="showPost(post.postId)">
+                  {{post.title}}
+                </a>
+              </tr>
+              <tr>
+                von
+                <a href="">{{post.user}}</a>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr *ngIf="post.big">
+          <td>
+          </td>
+          <td>
+          </td>
+          <td colspan="4">
+            <img [src]="post.path" (click)="makeBig(post)">
+          </td>
+        </tr>
+      </table>
+    </div>
+  </tr>
+</table>
+<br>
+<a *ngIf="!loading && (!data || data.length == 0)" align="center" style="text-align:center; display:block; color: gray;">  
+  No posts yet!
+</a>

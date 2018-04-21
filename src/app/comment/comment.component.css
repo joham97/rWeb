@@ -1,0 +1,12 @@
+.link {
+    cursor: pointer;
+    color: blue;
+}
+
+.underline {    
+    text-decoration: underline;
+}
+
+.verticalLine {
+    border-left: thick solid #aaa;
+  }

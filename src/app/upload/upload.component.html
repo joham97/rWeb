@@ -1,0 +1,28 @@
+<div style="margin: 12px;">
+  <mat-form-field class="upload-full-width">
+    <input matInput placeholder="Title" type="text" [(ngModel)]="title" required>
+  </mat-form-field>
+  <mat-form-field class="upload-full-width">
+    <textarea matInput placeholder="Description" [(ngModel)]="description"></textarea>
+  </mat-form-field>
+
+  <table width="100%" >
+    <tr>
+      <td width="45%">
+        <input type="file" (change)="fileChanged($event)" name="file" accept="image/*">
+      </td>
+      <td width="55%" align="left">
+        <button *ngIf="enabled" mat-raised-button (click)="upload()">Upload</button>
+        <button *ngIf="!enabled" disabled mat-raised-button (click)="upload()">Upload</button>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <img *ngIf="path" [src]="path">
+      </td>
+      <td>
+      </td>
+    </tr>
+  </table>
+  <br>
+</div>
