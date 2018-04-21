@@ -13,7 +13,11 @@ export class RedditApiService {
   public BASEPATH = 'http://localhost:8081';
   public session: Session;
 
-  constructor(private rest: RestService) { }
+  constructor(private rest: RestService) {
+    this.rest.invalidSession.subscribe(() => {
+      this.removeSession();
+    });
+  }
 
   public getNewPosts(): Observable<Response> {
     return this.rest.getRequest(this.BASEPATH + '/post/new' + this.getSessionKeyAsAttribute());
@@ -104,6 +108,7 @@ export class RedditApiService {
   public removeSession() {
     this.session = null;
     localStorage.removeItem('session');
+    this.loggedOut.emit();
   }
 
   private getSessionKeyAsAttribute() {

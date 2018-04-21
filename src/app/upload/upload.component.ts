@@ -23,6 +23,9 @@ export class UploadComponent implements OnInit {
   constructor(private redditApi: RedditApiService, private router: Router) { }
 
   ngOnInit() {
+    this.redditApi.loggedOut.subscribe(() => {
+      this.router.navigate(['/r/dev']);
+    });
     if (!this.redditApi.isLoggedIn()) {
       this.router.navigate(['/r/dev']);
     }
