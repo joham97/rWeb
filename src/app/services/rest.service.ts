@@ -1,9 +1,10 @@
-import { Http, Headers, RequestOptions, Request, RequestMethod } from '@angular/http';
+import { Http, RequestOptions } from '@angular/http';
 import { Component, Injectable, EventEmitter, Output } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+import { HttpRequest } from '@angular/common/http';
 
 @Injectable()
 export class RestService {
@@ -12,34 +13,58 @@ export class RestService {
 
   constructor(private http: Http) { }
 
+  // GET-Request ausführen
   public getRequest(ressourceAPI: string) {
-    return this.http.get(ressourceAPI).map(data => data.json()).catch((e) => this.handleError(e));
+    return this.http.get(ressourceAPI).map(data => data.json()).catch((e) => {
+      if (e.status >= 400) {
+        return Observable.throw(e);
+      }
+    });
   }
 
-  public getRequestBody(ressourceAPI: string, body: any) {
-    return this.http.get(ressourceAPI, body).map(data => data.json()).catch((e) => this.handleError(e));
-  }
-
-  public postFormRequest(ressourceAPI: string, body: any) {
-    return this.http.post(ressourceAPI, body).catch((e) => this.handleError(e));
-  }
-
+  // POST-Request ausführen
   public postRequest(ressourceAPI: string, body: any) {
-    return this.http.post(ressourceAPI, body).map(data => data.json()).catch((e) => this.handleError(e));
+    return this.http.post(ressourceAPI, body).map(data => data.json()).catch((e) => {
+      if (e.status >= 400) {
+        return Observable.throw(e);
+      }
+    });
   }
 
+  // PUT-Request ausführen
   public putRequest(ressourceAPI: string, body: any) {
-    return this.http.put(ressourceAPI, body).map(data => data.json()).catch((e) => this.handleError(e));
+    return this.http.put(ressourceAPI, body).map(data => data.json()).catch((e) => {
+      if (e.status >= 400) {
+        return Observable.throw(e);
+      }
+    });
   }
 
-  public deleteRequest(ressourceAPI: string) {
-    return this.http.delete(ressourceAPI).catch((e) => this.handleError(e));
+  // DELETE-Request ausführen
+  public deleteRequest(ressourceAPI: string, body: any) {
+    return this.http.delete(ressourceAPI, new RequestOptions({ body: body })).map(data => data.json()).catch((e) => {
+      if (e.status >= 400) {
+        return Observable.throw(e);
+      }
+    });
+  }
+
+  // Upload-Request ausführen
+  public uploadRequest(ressourceAPI: string, file: File) {
+    const formData = new FormData();
+    formData.append(file.name, file);
+
+    return this.http.post(ressourceAPI, formData).map(data => data.json()).catch((e) => {
+      if (e.status >= 400) {
+        return Observable.throw(e);
+      }
+    });
   }
 
   handleError(e) {
     if (e.status === 401) {
       this.invalidSession.emit();
-    }else if (e.status >= 400) {
+    } else if (e.status >= 400) {
       return Observable.throw(e);
     }
   }

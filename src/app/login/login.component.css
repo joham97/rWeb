@@ -13,6 +13,6 @@ table {
     margin-right: auto;
 }
 
-mat-input-container {
+mat-form-field {
     width: 220px;
 }

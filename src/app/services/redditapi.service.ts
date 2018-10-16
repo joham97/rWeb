@@ -1,3 +1,4 @@
+import { Http } from '@angular/http';
 import { Post, Response, Session, Comment } from './../entities/interfaces';
 import { RestService } from './rest.service';
 import { Component, Injectable, Output, EventEmitter } from '@angular/core';
@@ -10,7 +11,7 @@ export class RedditApiService {
   @Output() loggedOut = new EventEmitter<any>();
   @Output() sessionUpdated = new EventEmitter<any>();
 
-  public BASEPATH = 'http://localhost:8081';
+  public BASEPATH = 'http://localhost:60841/api';
   public session: Session;
 
   constructor(private rest: RestService) {
@@ -20,35 +21,41 @@ export class RedditApiService {
   }
 
   public getNewPosts(): Observable<Response> {
-    return this.rest.getRequest(this.BASEPATH + '/post/new' + this.getSessionKeyAsAttribute());
+    return this.rest.getRequest(this.BASEPATH + '/Posts?type=new' + this.getSessionKeyAsSingleAttribute());
   }
 
   public getHotPosts(): Observable<Response> {
-    return this.rest.getRequest(this.BASEPATH + '/post/hot' + this.getSessionKeyAsAttribute());
+    return this.rest.getRequest(this.BASEPATH + '/Posts?type=hot' + this.getSessionKeyAsSingleAttribute());
   }
 
   public login(username: string, password: string): Observable<Response> {
-    return this.rest.getRequest(this.BASEPATH + '/login?username=' + username + '&password=' + password);
+    var body = { username, password };
+    return this.rest.postRequest(this.BASEPATH + '/Login', body);
   }
 
   public logout(): Observable<Response> {
-    return this.rest.getRequest(this.BASEPATH + '/logout?sessionkey=' + this.session.sessionkey);
+    return this.rest.getRequest(this.BASEPATH + '/Logout' + this.getSessionKeyAsAttribute());
   }
 
   public register(username: string, password: string): Observable<Response> {
-    return this.rest.getRequest(this.BASEPATH + '/register?username=' + username + '&password=' + password);
+    var body = { username, password };
+    return this.rest.postRequest(this.BASEPATH + '/Register', body);
+  }
+
+  public checkSession() {
+    return this.rest.getRequest(this.BASEPATH + '/Validate' + this.getSessionKeyAsAttribute());
   }
 
   public getUser(userId: number): Observable<Response> {
-    return this.rest.getRequest(this.BASEPATH + '/user?userId=' + userId);
+    return this.rest.getRequest(this.BASEPATH + '/User?userId=' + userId);
   }
 
   public createPost(post): Observable<Response> {
-    return this.rest.postRequest(this.BASEPATH + '/post?sessionkey=' + this.session.sessionkey, post);
+    return this.rest.postRequest(this.BASEPATH + '/Post' + this.getSessionKeyAsAttribute(), post);
   }
 
   public createComment(comment): Observable<Response> {
-    return this.rest.postRequest(this.BASEPATH + '/comment?sessionkey=' + this.session.sessionkey, comment);
+    return this.rest.postRequest(this.BASEPATH + '/Comment' + this.getSessionKeyAsAttribute(), comment);
   }
 
   public vote(post: Post, value: number) {
@@ -56,40 +63,23 @@ export class RedditApiService {
       postId: post.postId,
       value: value
     };
-    return this.rest.putRequest(this.BASEPATH + '/post/vote?sessionkey=' + this.session.sessionkey, body);
+    return this.rest.postRequest(this.BASEPATH + '/Vote' + this.getSessionKeyAsAttribute(), body);
   }
 
   public voteComment(comment: Comment, value: number) {
     const body = {
-      commentId: comment.id,
+      commentId: comment.commentId,
       value: value
     };
-    return this.rest.putRequest(this.BASEPATH + '/comment/vote?sessionkey=' + this.session.sessionkey, body);
+    return this.rest.postRequest(this.BASEPATH + '/VoteComment' + this.getSessionKeyAsAttribute(), body);
   }
 
   public getFullPost(postId: number): Observable<Response> {
-    return this.rest.getRequest(this.BASEPATH + '/post?postId=' + postId + this.getSessionKeyAsSingleAttribute());
+    return this.rest.getRequest(this.BASEPATH + '/Post?postId=' + postId + this.getSessionKeyAsSingleAttribute());
   }
 
-  public upload(img: File): Observable<Response> {
-    return Observable.create(observer => {
-      const formData: FormData = new FormData();
-      formData.append('image', img, img.name);
-
-      const xhr = new XMLHttpRequest();
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4) {
-          if (xhr.status === 200) {
-            observer.next(JSON.parse(xhr.response));
-            observer.complete();
-          } else {
-            observer.error(new Error('file upload failed'));
-          }
-        }
-      };
-      xhr.open('PUT', this.BASEPATH + '/post/upload', true);
-      xhr.send(formData);
-    });
+  public upload(file: File): Observable<Response> {
+    return this.rest.uploadRequest(this.BASEPATH + '/Upload', file);
   }
 
   //#region Verwaltung der Session
@@ -129,10 +119,6 @@ export class RedditApiService {
 
   public isLoggedIn() {
     return this.getSession() != null;
-  }
-
-  public checkSession() {
-    return this.rest.getRequest(this.BASEPATH + '/validate?sessionkey=' + this.session.sessionkey);
   }
   //#endregion
 

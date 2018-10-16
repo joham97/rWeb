@@ -55,7 +55,6 @@ export class CommentComponent implements OnInit {
         value = 0;
       }
       this.redditApi.voteComment(comment, value).subscribe((res) => {
-        console.log(res);
         comment.upvotes = res.data.upvotes;
         comment.downvotes = res.data.downvotes;
         comment.yourvote = res.data.yourvote;

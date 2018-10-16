@@ -18,7 +18,7 @@ export interface Session {
 }
 
 export interface Comment {
-    id: number;
+    commentId: number;
     user: string;
     text: string;
     upvotes: number;

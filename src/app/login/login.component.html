@@ -4,16 +4,16 @@
     <table>
       <tr>
         <td>
-          <mat-input-container>
+          <mat-form-field>
             <input matInput placeholder="Username" [(ngModel)]="username" (keypress)="keypressLogin($event.keyCode)">
-          </mat-input-container>
+          </mat-form-field>
         </td>
       </tr>
       <tr>
         <td>
-          <mat-input-container>
+          <mat-form-field>
             <input matInput type="password" placeholder="Passwort" [(ngModel)]="password" (keypress)="keypressLogin($event.keyCode)">
-          </mat-input-container>
+          </mat-form-field>
         </td>
       </tr>
       <ng-container *ngIf="msgFailed">
@@ -26,8 +26,8 @@
     </table>
     <br>
     <div>
-      <button mat-raised-button color="primary" (click)="login()">Login</button>
-      <button mat-raised-button color="primary" (click)="cancel()">Abbrechen</button>
+      <button mat-raised-button color="primary" (click)="login()" style="margin: 6px">Login</button>
+      <button mat-raised-button color="primary" (click)="cancel()" style="margin: 6px">Abbrechen</button>
     </div>
   </mat-tab>
 
@@ -35,23 +35,23 @@
     <table>
       <tr>
         <td>
-          <mat-input-container>
+          <mat-form-field>
             <input matInput placeholder="Username" [(ngModel)]="username" (keypress)="keypressRegister($event.keyCode)">
-          </mat-input-container>
+          </mat-form-field>
         </td>
       </tr>
       <tr>
         <td>
-          <mat-input-container>
+          <mat-form-field>
             <input matInput type="password" placeholder="Passwort" [(ngModel)]="password" (keypress)="keypressRegister($event.keyCode)">
-          </mat-input-container>
+          </mat-form-field>
         </td>
       </tr>
       <tr>
         <td>
-          <mat-input-container>
+          <mat-form-field>
             <input matInput type="password" placeholder="Passwort bestätigen" [(ngModel)]="passwordSubmit" (keypress)="keypressRegister($event.keyCode)">
-          </mat-input-container>
+          </mat-form-field>
         </td>
       </tr>
       <ng-container *ngIf="msgFailed">
@@ -64,8 +64,8 @@
     </table>
     <br>
     <div>
-      <button mat-raised-button color="primary" (click)="register()">Registrieren</button>
-      <button mat-raised-button color="primary" (click)="cancel()">Abbrechen</button>
+      <button mat-raised-button color="primary" (click)="register()" style="margin: 6px">Registrieren</button>
+      <button mat-raised-button color="primary" (click)="cancel()" style="margin: 6px">Abbrechen</button>
     </div>
   </mat-tab>
 

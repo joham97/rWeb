@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/interval';
 import { Server } from 'selenium-webdriver/safari';
 import { Router } from '@angular/router';
+import { HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-upload',
@@ -32,12 +33,18 @@ export class UploadComponent implements OnInit {
   }
 
   fileChanged(e: Event) {
-    const target: HTMLInputElement = e.target as HTMLInputElement;
+    const file = (e.target as HTMLInputElement).files[0];
+    
+    if (!file)
+      return;
+
     this.enabled = false;
-    this.redditApi.upload(target.files[0]).subscribe((res: Response) => {
+
+    this.redditApi.upload(file).subscribe((res: any) => {
+      console.log(event);
       this.path = res.data.path;
       this.enabled = true;
-    });
+    });  
   }
 
   upload() {

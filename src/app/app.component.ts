@@ -35,13 +35,13 @@ export class AppComponent {
         }
         if (this.redditApi.getSession()) {
           this.redditApi.checkSession().subscribe(res => {
-            if (res.message !== 'true') {
-              this.redditApi.removeSession();
-              this.login();
-            } else {
+            if (res.success) {
               this.redditApi.getUser(this.redditApi.getSession().userId).subscribe((data) => {
                 this.user = data.data;
               });
+            } else {
+              this.redditApi.removeSession();
+              this.login();
             }
           });
         }
