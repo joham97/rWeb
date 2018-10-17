@@ -11,7 +11,7 @@ export class RedditApiService {
   @Output() loggedOut = new EventEmitter<any>();
   @Output() sessionUpdated = new EventEmitter<any>();
 
-  public BASEPATH = 'http://localhost:60841/api';
+  public BASEPATH = 'http://10.112.16.42:8080/api';
   public session: Session;
 
   constructor(private rest: RestService) {
