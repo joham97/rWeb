@@ -38,6 +38,7 @@ export class PostComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.redditApi.getFullPost(params.id).subscribe((res) => {
         this.post = res.data;
+        this.post.big = true;
       });
     });
   }
