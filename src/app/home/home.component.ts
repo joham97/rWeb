@@ -33,12 +33,12 @@ export class HomeComponent implements OnInit {
 
   loadData() {
     this.loading = true;
-    if (this.router.url === '/r/dev/hot') {
+    if (this.router.url === '/r/krz/hot') {
       this.redditApi.getHotPosts().subscribe((res: Response) => {
         this.data = res.data;
         this.loading = false;
       });
-    } else if (this.router.url === '/r/dev') {
+    } else if (this.router.url === '/r/krz') {
       this.redditApi.getNewPosts().subscribe((res: Response) => {
         this.data = res.data;
         this.loading = false;
@@ -62,6 +62,6 @@ export class HomeComponent implements OnInit {
   }
 
   showPost(id: number) {
-    this.router.navigate(['/r/dev/post/' + id]);
+    this.router.navigate(['/r/krz/post/' + id]);
   }
 }

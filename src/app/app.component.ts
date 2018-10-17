@@ -27,11 +27,11 @@ export class AppComponent {
         this.hot = false;
         this.new = false;
         this.uploadPage = false;
-        if (navevent.urlAfterRedirects === '/r/dev/hot') {
+        if (navevent.urlAfterRedirects === '/r/krz/hot') {
           this.hot = true;
-        } else if (navevent.urlAfterRedirects === '/r/dev') {
+        } else if (navevent.urlAfterRedirects === '/r/krz') {
           this.new = true;
-        } else if (navevent.urlAfterRedirects === '/r/dev/upload') {
+        } else if (navevent.urlAfterRedirects === '/r/krz/upload') {
           this.uploadPage = true;
         }
       }
@@ -61,7 +61,7 @@ export class AppComponent {
   }
 
   upload() {
-    this.router.navigate(['/r/dev/upload']);
+    this.router.navigate(['/r/krz/upload']);
   }
 
   isLoggedIn() {
@@ -69,11 +69,11 @@ export class AppComponent {
   }
 
   newPage() {
-    this.router.navigate(['/r/dev']);
+    this.router.navigate(['/r/krz']);
   }
 
   hotPage() {
-    this.router.navigate(['/r/dev/hot']);
+    this.router.navigate(['/r/krz/hot']);
   }
 
 }

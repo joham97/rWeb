@@ -22,32 +22,32 @@ import { SessionService } from './services/session.service';
 const appRoutes: Routes = [
   {
     path: '',
-    redirectTo: '/r/dev',
+    redirectTo: '/r/krz',
     pathMatch: 'full'
   },
   {
-    path: 'r/dev',
+    path: 'r/krz',
     component: HomeComponent
   },
   {
-    path: 'r/dev/hot',
+    path: 'r/krz/hot',
     component: HomeComponent
   },
   {
-    path: 'r/dev/test',
+    path: 'r/krz/test',
     component: TestComponent
   },
   {
-    path: 'r/dev/post/:id',
+    path: 'r/krz/post/:id',
     component: PostComponent
   },
   {
-    path: 'r/dev/upload',
+    path: 'r/krz/upload',
     component: UploadComponent
   },
   {
     path: '**',
-    redirectTo: '/r/dev'
+    redirectTo: '/r/krz'
   }
 ];
 
