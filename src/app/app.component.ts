@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { LoginComponent } from './login/login.component';
 import { User } from './entities/interfaces';
-import { MatDialog, MatDialogConfig, MatDialogClose } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { RedditApiService } from './services/redditapi.service';
 import { Router, NavigationEnd, Event } from '@angular/router';
+import { SessionService } from './services/session.service';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +20,7 @@ export class AppComponent {
   new: boolean;
   uploadPage: boolean;
 
-  constructor(private dialog: MatDialog, private redditApi: RedditApiService, private router: Router) {
+  constructor(private dialog: MatDialog, private redditApi: RedditApiService, private sessionService: SessionService, private router: Router) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
         const navevent = event as NavigationEnd;
@@ -33,44 +34,30 @@ export class AppComponent {
         } else if (navevent.urlAfterRedirects === '/r/dev/upload') {
           this.uploadPage = true;
         }
-        if (this.redditApi.getSession()) {
-          this.redditApi.checkSession().subscribe(res => {
-            if (res.success) {
-              this.redditApi.getUser(this.redditApi.getSession().userId).subscribe((data) => {
-                this.user = data.data;
-              });
-            } else {
-              this.redditApi.removeSession();
-              this.login();
-            }
-          });
-        }
       }
     });
+    
+    this.redditApi.loggedIn.subscribe(() => {
+      this.redditApi.getUser(this.sessionService.getSession().userId).subscribe((res) => {
+        this.user = res.data;
+      });
+    });
+    
+    this.redditApi.loggedOut.subscribe(() => {
+      this.user = null;
+      this.login();
+    });
   }
-
+  
   login() {
     this.dialog.open(LoginComponent, {
       disableClose: true,
       data: { popupType: 'login' }
-    }).afterClosed().subscribe((success: boolean) => {
-      if (success) {
-        this.redditApi.getUser(this.redditApi.getSession().userId).subscribe((data) => {
-          this.user = data.data;
-        });
-        this.redditApi.loggedIn.emit();
-      }
     });
   }
 
   logout() {
-    this.redditApi.logout().subscribe((res) => {
-      if (res.success) {
-        this.redditApi.removeSession();
-        this.user = null;
-        this.redditApi.loggedOut.emit();
-      }
-    });
+    this.redditApi.logout();
   }
 
   upload() {

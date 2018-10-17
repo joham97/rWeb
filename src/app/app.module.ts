@@ -17,6 +17,7 @@ import { LoginComponent } from './login/login.component';
 import { AppComponent } from './app.component';
 import { TestComponent } from './test/test.component';
 import { CommentComponent } from './comment/comment.component';
+import { SessionService } from './services/session.service';
 
 const appRoutes: Routes = [
   {
@@ -79,7 +80,8 @@ const appRoutes: Routes = [
   ],
   providers: [
     RestService,
-    RedditApiService
+    RedditApiService,
+    SessionService
   ],
   entryComponents: [
     LoginComponent

@@ -7,6 +7,7 @@ import 'rxjs/add/observable/interval';
 import { Server } from 'selenium-webdriver/safari';
 import { Router } from '@angular/router';
 import { Comment } from '@angular/compiler';
+import { SessionService } from '../services/session.service';
 
 @Component({
   selector: 'app-home',
@@ -18,7 +19,7 @@ export class HomeComponent implements OnInit {
   data: Post[];
   loading = true;
 
-  constructor(private redditApi: RedditApiService, private router: Router) { }
+  constructor(private redditApi: RedditApiService, private sessionService: SessionService, private router: Router) { }
 
   ngOnInit() {
     this.redditApi.loggedIn.subscribe(() => {
@@ -50,7 +51,7 @@ export class HomeComponent implements OnInit {
   }
 
   vote(post: Post, value: number) {
-    if (this.redditApi.isLoggedIn()) {
+    if (this.sessionService.hasSession()) {
       if (post.yourvote === value) {
         value = 0;
       }

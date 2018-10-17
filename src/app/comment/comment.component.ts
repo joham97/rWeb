@@ -3,6 +3,7 @@ import { RedditApiService } from '../services/redditapi.service';
 import { Router } from '@angular/router';
 import { PostComponent } from '../post/post.component';
 import { Comment } from './../entities/interfaces';
+import { SessionService } from '../services/session.service';
 
 @Component({
   selector: 'app-comment',
@@ -17,7 +18,7 @@ export class CommentComponent implements OnInit {
   @Input() post: boolean;
   commentText: string;
 
-  constructor(private redditApi: RedditApiService, private router: Router) {}
+  constructor(private redditApi: RedditApiService, private sessionService: SessionService, private router: Router) {}
 
   ngOnInit() { }
 
@@ -26,7 +27,7 @@ export class CommentComponent implements OnInit {
   }
 
   newComment() {
-    if (this.redditApi.isLoggedIn()) {
+    if (this.sessionService.hasSession()) {
       const comment = {
         text: this.commentText,
         postId: -1,
@@ -46,11 +47,11 @@ export class CommentComponent implements OnInit {
   }
 
   isLoggedIn() {
-    return this.redditApi.isLoggedIn();
+    return this.sessionService.hasSession();
   }
 
   vote(comment: Comment, value: number) {
-    if (this.redditApi.isLoggedIn()) {
+    if (this.sessionService.hasSession()) {
       if (comment.yourvote === value) {
         value = 0;
       }

@@ -3,6 +3,7 @@ import { Component, Inject, AfterViewInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MatTabGroup } from '@angular/material';
 import sha256 from "sha256";
+import { SessionService } from '../services/session.service';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,7 @@ export class LoginComponent implements AfterViewInit {
   public msgFailed: string;
 
   constructor(public dialogRef: MatDialogRef<LoginComponent>, @Inject(MAT_DIALOG_DATA) data: any,
-    private redditApi: RedditApiService) {
+    private redditApi: RedditApiService, private sessionService: SessionService) {
     this.popupType = data.popupType;
   }
 
@@ -31,6 +32,14 @@ export class LoginComponent implements AfterViewInit {
         this.matTabGroup.selectedIndex = 1;
       }
     }, 500);
+    
+    this.redditApi.loggedIn.subscribe((err) => {
+      this.dialogRef.close(true);
+    });
+    
+    this.redditApi.loginError.subscribe((err) => {
+      this.msgFailed = err.message;
+    });
   }
 
   public cancel() {
@@ -41,16 +50,8 @@ export class LoginComponent implements AfterViewInit {
   public login() {
     if (this.username.length > 0 && this.password.length > 3) {
       var hash = sha256(this.password);
-      this.redditApi.login(this.username, hash).subscribe((data) => {
-        if (data.success) {
-          this.redditApi.setSession(data.data);
-          this.dialogRef.close(true);
-        } else {
-          this.msgFailed = 'Login fehlgeschlagen.';
-        }
-      }, (err) => {
-        this.msgFailed = 'Login fehlgeschlagen.';
-      });
+      this.msgFailed = '';
+      this.redditApi.login(this.username, hash);
     } else {
       this.msgFailed = 'Eingaben zu kurz.';
     }

@@ -1,12 +1,8 @@
-import { Post, Response } from './../entities/interfaces';
 import { RedditApiService } from './../services/redditapi.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { CurrencyPipe } from '@angular/common';
-import { Observable } from 'rxjs/Observable';
+import { Component, OnInit } from '@angular/core';
 import 'rxjs/add/observable/interval';
-import { Server } from 'selenium-webdriver/safari';
 import { Router } from '@angular/router';
-import { HttpEventType } from '@angular/common/http';
+import { SessionService } from '../services/session.service';
 
 @Component({
   selector: 'app-upload',
@@ -21,13 +17,13 @@ export class UploadComponent implements OnInit {
 
   enabled = true;
 
-  constructor(private redditApi: RedditApiService, private router: Router) { }
+  constructor(private redditApi: RedditApiService, private sessionService: SessionService, private router: Router) { }
 
   ngOnInit() {
     this.redditApi.loggedOut.subscribe(() => {
       this.router.navigate(['/r/dev']);
     });
-    if (!this.redditApi.isLoggedIn()) {
+    if (!this.sessionService.hasSession()) {
       this.router.navigate(['/r/dev']);
     }
   }
