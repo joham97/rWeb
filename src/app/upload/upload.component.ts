@@ -15,16 +15,16 @@ export class UploadComponent implements OnInit {
   description: string;
   path: string;
 
-  enabled = true;
+  isUploadingImage = false;
 
   constructor(private redditApi: RedditApiService, private sessionService: SessionService, private router: Router) { }
 
   ngOnInit() {
     this.redditApi.loggedOut.subscribe(() => {
-      this.router.navigate(['/r/dev']);
+      this.router.navigate(['/r/krz']);
     });
     if (!this.sessionService.hasSession()) {
-      this.router.navigate(['/r/dev']);
+      this.router.navigate(['/r/krz']);
     }
   }
 
@@ -34,24 +34,28 @@ export class UploadComponent implements OnInit {
     if (!file)
       return;
 
-    this.enabled = false;
+    this.isUploadingImage = true;
 
     this.redditApi.upload(file).subscribe((res: any) => {
-      console.log(event);
       this.path = res.data.path;
-      this.enabled = true;
+      this.isUploadingImage = false;
     });  
   }
 
-  upload() {
-    const post = {
-      title: this.title.trim(),
-      description: this.description.trim(),
-      path: this.path
-    };
-    this.redditApi.createPost(post).subscribe((res) => {
-      this.router.navigate(['/r/dev']);
-    });
+  isUploadable(): boolean {
+    return this.title.length > 0 && !this.isUploadingImage;
   }
 
+  upload() {
+    if(this.isUploadable()) {
+      const post = {
+        title: this.title.trim(),
+        description: this.description.trim(),
+        path: this.path
+      };
+      this.redditApi.createPost(post).subscribe((res) => {
+        this.router.navigate(['/r/krz']);
+      });
+    }
+  }
 }

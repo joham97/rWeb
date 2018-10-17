@@ -1,25 +1,32 @@
 <div style="margin: 12px;">
   <mat-form-field class="upload-full-width">
-    <input matInput placeholder="Title" type="text" [(ngModel)]="title" required>
+    <input matInput placeholder="Title" type="text" [(ngModel)]="title">
   </mat-form-field>
   <mat-form-field class="upload-full-width">
-    <textarea matInput placeholder="Description" [(ngModel)]="description"></textarea>
+    <textarea matInput placeholder="Description (Optional)" [(ngModel)]="description"></textarea>
   </mat-form-field>
 
-  <table width="100%" >
+  <table width="100%">
     <tr>
-      <td width="45%">
-        <input type="file" (change)="fileChanged($event)" name="file" accept="image/*">
-      </td>
-      <td width="55%" align="left">
-        <button mat-raised-button (click)="upload()">Upload</button>
+      <td>
+        <div style="color: rgb(169, 169, 169); display: inline; font-family: Roboto,Helvetica Neue,sans-serif;">
+          Image (Optional)
+        </div>
+        <input style="display: inline" type="file" (change)="fileChanged($event)" name="file" accept="image/*">
       </td>
     </tr>
-    <tr>
+    <tr *ngIf="path">
       <td>
-        <img *ngIf="path" [src]="path">
+        <div style="color: rgb(169, 169, 169); display: inline; font-family: Roboto,Helvetica Neue,sans-serif;">
+          Preview:
+        </div>
+        <img [src]="path" style="max-height: 300px;">
       </td>
-      <td>
+    </tr>
+    <hr>
+    <tr>
+      <td align="center" width="100%">
+        <button mat-raised-button style="background-color: #FFA953;" (click)="upload()">Upload</button>
       </td>
     </tr>
   </table>
