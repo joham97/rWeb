@@ -23,8 +23,12 @@
               </tr>
             </table>
           </td>
-          <td *ngIf="post.path" style="width: 64px" (click)="makeBig(post)">
-            <img [src]="post.path" style="max-width: 64px; max-height: 64px">
+          <td *ngIf="post.path" style="width: 64px" (click)="makeBig(post)" class="zoomContainer">
+            <img [src]="post.path" style="max-width: 64px; max-height: 64px" class="zoomImage">
+            <div class="zoomOverlay">
+              <mat-icon *ngIf="!post.big" class="zoom">zoom_in</mat-icon>
+              <mat-icon *ngIf="post.big" class="zoom">zoom_out</mat-icon>
+            </div>
           </td>
           <td>
             <table>

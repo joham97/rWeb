@@ -5,9 +5,9 @@ import { RedditApiService } from './services/redditapi.service';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
-import { MatToolbarModule, MatCardModule, MatIconModule, MatNativeDateModule, MatListModule, MatFormFieldModule } from '@angular/material';
-import { MatButtonModule, MatDialogModule, MatDatepickerModule, MatInputModule, MatMenuModule } from '@angular/material';
-import { MatTabsModule, MAT_DATE_LOCALE, MatSnackBarModule, MatExpansionModule } from '@angular/material';
+import { MatCardModule, MatIconModule, MatFormFieldModule } from '@angular/material';
+import { MatButtonModule, MatDialogModule, MatInputModule, MatMenuModule } from '@angular/material';
+import { MatTabsModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HomeComponent } from './home/home.component';
@@ -74,6 +74,7 @@ const appRoutes: Routes = [
     MatTabsModule,
     MatCardModule,
     MatFormFieldModule,
+    MatIconModule,
     RouterModule.forRoot(
       appRoutes, { useHash: true }
     ),
