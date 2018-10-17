@@ -1,13 +1,10 @@
 import { Post, Response } from './../entities/interfaces';
 import { RedditApiService } from './../services/redditapi.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { CurrencyPipe } from '@angular/common';
-import { Observable } from 'rxjs/Observable';
+import { Component, OnInit } from '@angular/core';
 import 'rxjs/add/observable/interval';
-import { Server } from 'selenium-webdriver/safari';
 import { Router } from '@angular/router';
-import { Comment } from '@angular/compiler';
 import { SessionService } from '../services/session.service';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -19,6 +16,8 @@ export class HomeComponent implements OnInit {
   data: Post[];
   loading = true;
 
+  onUpdateTimer: any;
+
   constructor(private redditApi: RedditApiService, private sessionService: SessionService, private router: Router) { }
 
   ngOnInit() {
@@ -28,19 +27,28 @@ export class HomeComponent implements OnInit {
     this.redditApi.loggedOut.subscribe(() => {
       this.loadData();
     });
-    this.loadData();
+    this.onUpdateTimer = timer(0, 5000);
+    this.onUpdateTimer.subscribe(() => {
+      this.loadData();
+    });
   }
 
   loadData() {
     this.loading = true;
     if (this.router.url === '/r/krz/hot') {
       this.redditApi.getHotPosts().subscribe((res: Response) => {
-        this.data = res.data;
+        var equal: boolean = JSON.stringify(this.data) === JSON.stringify(res.data);
+        if(!equal){
+          this.data = res.data;
+        }
         this.loading = false;
       });
     } else if (this.router.url === '/r/krz') {
       this.redditApi.getNewPosts().subscribe((res: Response) => {
-        this.data = res.data;
+        var equal: boolean = JSON.stringify(this.data) === JSON.stringify(res.data);
+        if(!equal){
+          this.data = res.data;
+        }
         this.loading = false;
       });
     }
