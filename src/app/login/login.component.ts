@@ -2,6 +2,7 @@ import { RedditApiService } from './../services/redditapi.service';
 import { Component, Inject, AfterViewInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MatTabGroup } from '@angular/material';
+import sha256 from "sha256";
 
 @Component({
   selector: 'app-login',
@@ -38,8 +39,9 @@ export class LoginComponent implements AfterViewInit {
 
   //#region Login
   public login() {
-    if (this.username.length > 2 && this.password.length > 2) {
-      this.redditApi.login(this.username, this.password).subscribe((data) => {
+    if (this.username.length > 0 && this.password.length > 3) {
+      var hash = sha256(this.password);
+      this.redditApi.login(this.username, hash).subscribe((data) => {
         if (data.success) {
           this.redditApi.setSession(data.data);
           this.dialogRef.close(true);
@@ -64,8 +66,9 @@ export class LoginComponent implements AfterViewInit {
 
   //#region Registrieren
   public register() {
-    if (this.username.length > 3 && this.password.length > 3 && this.password === this.passwordSubmit) {
-      this.redditApi.register(this.username, this.password).subscribe((data) => {
+    if (this.username.length > 0 && this.password.length > 3 && this.password === this.passwordSubmit) {
+      var hash = sha256(this.password);
+      this.redditApi.register(this.username, hash).subscribe((data) => {
         this.matTabGroup.selectedIndex = 0;
       });
     }
