@@ -50,7 +50,7 @@ export class UploadComponent implements OnInit {
     if(this.isUploadable()) {
       const post = {
         title: this.title.trim(),
-        description: this.description.trim(),
+        description: (this.description)?this.description.trim():'',
         path: this.path
       };
       this.redditApi.createPost(post).subscribe((res) => {
