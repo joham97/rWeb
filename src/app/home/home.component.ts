@@ -1,6 +1,6 @@
 import { Post, Response } from './../entities/interfaces';
 import { RedditApiService } from './../services/redditapi.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, isDevMode } from '@angular/core';
 import 'rxjs/add/observable/interval';
 import { Router } from '@angular/router';
 import { SessionService } from '../services/session.service';
@@ -40,6 +40,11 @@ export class HomeComponent implements OnInit {
         var equal: boolean = JSON.stringify(this.data) === JSON.stringify(res.data);
         if(!equal){
           this.data = res.data;
+          if(isDevMode()){
+            this.data.forEach((e) => {
+              e.path = "http://10.112.16.42/" + e.path;
+            });
+          }
         }
         this.loading = false;
       });
@@ -48,6 +53,11 @@ export class HomeComponent implements OnInit {
         var equal: boolean = JSON.stringify(this.data) === JSON.stringify(res.data);
         if(!equal){
           this.data = res.data;
+          if(isDevMode()){
+            this.data.forEach((e) => {
+              e.path = "http://10.112.16.42/" + e.path;
+            });
+          }
         }
         this.loading = false;
       });

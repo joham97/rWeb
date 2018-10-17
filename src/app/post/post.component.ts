@@ -1,10 +1,7 @@
-import { Post, Response } from './../entities/interfaces';
+import { Post } from './../entities/interfaces';
 import { RedditApiService } from './../services/redditapi.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { CurrencyPipe } from '@angular/common';
-import { Observable } from 'rxjs/Observable';
+import { Component, OnInit, isDevMode } from '@angular/core';
 import 'rxjs/add/observable/interval';
-import { Server } from 'selenium-webdriver/safari';
 import { Router, ActivatedRoute} from '@angular/router';
 
 @Component({
@@ -39,6 +36,9 @@ export class PostComponent implements OnInit {
       this.redditApi.getFullPost(params.id).subscribe((res) => {
         this.post = res.data;
         this.post.big = true;
+        if(isDevMode()){
+          this.post.path = "http://10.112.16.42/" + this.post.path;
+        }
       });
     });
   }
