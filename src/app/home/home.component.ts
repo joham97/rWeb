@@ -13,7 +13,7 @@ import { timer } from 'rxjs';
 })
 export class HomeComponent implements OnInit {
 
-  data: Post[];
+  data: Post[] = [];
   loading = true;
 
   onUpdateTimer: any;
@@ -22,43 +22,27 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.redditApi.loggedIn.subscribe(() => {
-      this.loadData();
+      this.loadData(true);
     });
     this.redditApi.loggedOut.subscribe(() => {
-      this.loadData();
+      this.loadData(true);
     });
     this.onUpdateTimer = timer(0, 5000);
     this.onUpdateTimer.subscribe(() => {
-      this.loadData();
+      this.loadData(true);
     });
   }
 
-  loadData() {
+  loadData(optional?: boolean) {
     this.loading = true;
     if (this.router.url === '/r/krz/hot') {
       this.redditApi.getHotPosts().subscribe((res: Response) => {
-        var equal: boolean = JSON.stringify(this.data) === JSON.stringify(res.data);
-        if(!equal){
-          this.data = res.data;
-          if(isDevMode()){
-            this.data.forEach((e) => {
-              e.path = "http://10.112.16.42/" + e.path;
-            });
-          }
-        }
+        this.UpdateData(res.data, optional);
         this.loading = false;
       });
     } else if (this.router.url === '/r/krz') {
       this.redditApi.getNewPosts().subscribe((res: Response) => {
-        var equal: boolean = JSON.stringify(this.data) === JSON.stringify(res.data);
-        if(!equal){
-          this.data = res.data;
-          if(isDevMode()){
-            this.data.forEach((e) => {
-              e.path = "http://10.112.16.42/" + e.path;
-            });
-          }
-        }
+        this.UpdateData(res.data, optional);
         this.loading = false;
       });
     }
@@ -76,6 +60,18 @@ export class HomeComponent implements OnInit {
       this.redditApi.vote(post, value).subscribe((res) => {
         this.loadData();
       });
+    }
+  }
+
+
+  UpdateData(data: Post[], optional: boolean) {
+    if(!optional || this.data.length < data.length){
+      this.data = data;
+      if(isDevMode()){
+        this.data.forEach((e) => {
+          e.path = "http://10.112.16.42/" + e.path;
+        });
+      }
     }
   }
 
