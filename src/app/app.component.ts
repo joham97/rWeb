@@ -20,6 +20,8 @@ export class AppComponent {
   new: boolean;
   uploadPage: boolean;
 
+  version: any = "x.x.x";
+
   constructor(private dialog: MatDialog, private redditApi: RedditApiService, private sessionService: SessionService, private router: Router) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
@@ -47,6 +49,8 @@ export class AppComponent {
       this.user = null;
       this.login();
     });
+
+    this.version = require('../../package.json').version;
   }
   
   login() {
