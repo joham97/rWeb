@@ -15,7 +15,6 @@ import { UploadComponent } from './upload/upload.component';
 import { PostComponent } from './post/post.component';
 import { LoginComponent } from './login/login.component';
 import { AppComponent } from './app.component';
-import { TestComponent } from './test/test.component';
 import { CommentComponent } from './comment/comment.component';
 import { SessionService } from './services/session.service';
 
@@ -32,10 +31,6 @@ const appRoutes: Routes = [
   {
     path: 'r/krz/hot',
     component: HomeComponent
-  },
-  {
-    path: 'r/krz/test',
-    component: TestComponent
   },
   {
     path: 'r/krz/post/:id',
@@ -59,7 +54,6 @@ const appRoutes: Routes = [
     UploadComponent,
     PostComponent,
     LoginComponent,
-    TestComponent,
     CommentComponent
   ],
   imports: [
