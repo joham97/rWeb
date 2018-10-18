@@ -18,34 +18,8 @@ import { AppComponent } from './app.component';
 import { CommentComponent } from './comment/comment.component';
 import { SessionService } from './services/session.service';
 
-const appRoutes: Routes = [
-  {
-    path: '',
-    redirectTo: '/r/krz',
-    pathMatch: 'full'
-  },
-  {
-    path: 'r/krz',
-    component: HomeComponent
-  },
-  {
-    path: 'r/krz/hot',
-    component: HomeComponent
-  },
-  {
-    path: 'r/krz/post/:id',
-    component: PostComponent
-  },
-  {
-    path: 'r/krz/upload',
-    component: UploadComponent
-  },
-  {
-    path: '**',
-    redirectTo: '/r/krz'
-  }
-];
-
+import { AppRouting } from './routing/app.routing';
+import { RouteGuardService } from './routing/route-guard.service';
 
 @NgModule({
   declarations: [
@@ -69,14 +43,13 @@ const appRoutes: Routes = [
     MatCardModule,
     MatFormFieldModule,
     MatIconModule,
-    RouterModule.forRoot(
-      appRoutes, { useHash: true }
-    ),
+    AppRouting
   ],
   providers: [
     RestService,
     RedditApiService,
-    SessionService
+    SessionService,
+    RouteGuardService
   ],
   entryComponents: [
     LoginComponent
