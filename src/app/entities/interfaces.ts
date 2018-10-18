@@ -40,3 +40,7 @@ export interface Response {
     code: number;
     data: any;
 }
+
+export enum PageShown {
+    new, hot, upload
+}

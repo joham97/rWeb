@@ -13,10 +13,10 @@
         </li>
         <li style="float: right;">
             <div *ngIf="!isLoggedIn()">
-                <a class="clickable" (click)="login()">Login</a>
+                <a class="clickable" (click)="openLoginMask()">Login</a>
             </div>
             <div *ngIf="isLoggedIn()">
-                <a class="clickable" [matMenuTriggerFor]="menu3">{{user.username}}</a>
+                <a class="clickable" [matMenuTriggerFor]="menu3">{{loggedInUser.username}}</a>
                 <mat-menu #menu3="matMenu">
                     <button mat-menu-item (click)="myPosts()">My Posts</button>
                     <button mat-menu-item (click)="logout()">Logout</button>

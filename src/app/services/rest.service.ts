@@ -1,16 +1,15 @@
-import { Http, RequestOptions } from '@angular/http';
 import { Injectable, EventEmitter, Output } from '@angular/core';
+import { Http, RequestOptions } from '@angular/http';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
+// Service, that performs api call and handles exceptions
 @Injectable()
 export class RestService {
 
-  @Output() invalidSession = new EventEmitter<any>();
-
   constructor(private http: Http) { }
 
-  // GET-Request ausführen
+  // Perform GET-Request
   public getRequest(ressourceAPI: string) {
     return this.http.get(ressourceAPI).pipe(
       map(data => data.json()),
@@ -22,7 +21,7 @@ export class RestService {
     ));
   }
 
-  // POST-Request ausführen
+  // Perform POST-Request with Body
   public postRequest(ressourceAPI: string, body: any) {
     return this.http.post(ressourceAPI, body).pipe(
       map(data => data.json()),
@@ -34,7 +33,7 @@ export class RestService {
     ));
   }
 
-  // PUT-Request ausführen
+  // Perform PUT-Request with Body
   public putRequest(ressourceAPI: string, body: any) {
     return this.http.put(ressourceAPI, body).pipe(
       map(data => data.json()),
@@ -46,7 +45,7 @@ export class RestService {
     ));
   }
 
-  // DELETE-Request ausführen
+  // Perform DELETE-Request with Body
   public deleteRequest(ressourceAPI: string, body: any) {
     return this.http.delete(ressourceAPI, new RequestOptions({ body: body })).pipe(
       map(data => data.json()),
@@ -58,7 +57,7 @@ export class RestService {
     ));
   }
 
-  // Upload-Request ausführen
+  // Perform POST-Request with an attacted file  
   public uploadRequest(ressourceAPI: string, file: File) {
     const formData = new FormData();
     formData.append(file.name, file);
@@ -71,13 +70,5 @@ export class RestService {
         }
       }
     ));
-  }
-
-  handleError(e) {
-    if (e.status === 401) {
-      this.invalidSession.emit();
-    } else if (e.status >= 400) {
-      throwError(e);
-    }
   }
 }

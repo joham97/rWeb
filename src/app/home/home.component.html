@@ -10,20 +10,20 @@
           </td>
           <td>
             <table style="text-align: center">
-              <tr (click)="vote(post, 1)">
+              <tr (click)="vote(post, 1)" class="clickable">
                 <img *ngIf="post.yourvote == 1" src="assets/upvote-clicked.png" width="16px" height="16px">
                 <img *ngIf="post.yourvote != 1" src="assets/upvote.png" width="16px" height="16px">
               </tr>
               <tr>
                 {{post.upvotes - post.downvotes}}
               </tr>
-              <tr (click)="vote(post, -1)">
+              <tr (click)="vote(post, -1)" class="clickable">
                 <img *ngIf="post.yourvote == -1" src="assets/downvote-clicked.png" width="16px" height="16px">
                 <img *ngIf="post.yourvote != -1" src="assets/downvote.png" width="16px" height="16px">
               </tr>
             </table>
           </td>
-          <td *ngIf="post.path" style="width: 64px" (click)="makeBig(post)" class="zoomContainer">
+          <td *ngIf="post.path" style="width: 64px" (click)="makeBig(post)" class="zoomContainer clickable">
             <img [src]="post.path" style="max-width: 64px; max-height: 64px" class="zoomImage">
             <div class="zoomOverlay">
               <mat-icon *ngIf="!post.big" class="zoom">zoom_in</mat-icon>
@@ -33,7 +33,7 @@
           <td>
             <table>
               <tr>
-                <a style="font-size: 24px; cursor: pointer;" (click)="showPost(post.postId)">
+                <a style="font-size: 24px;" class="clickable" (click)="showPost(post.postId)">
                   {{post.title}}
                 </a>
               </tr>
@@ -50,7 +50,7 @@
           <td>
           </td>
           <td colspan="4">
-            <img [src]="post.path" (click)="makeBig(post)">
+            <img [src]="post.path" (click)="makeBig(post)" class="clickable">
           </td>
         </tr>
       </table>

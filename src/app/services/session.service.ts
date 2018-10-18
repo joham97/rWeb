@@ -2,16 +2,15 @@ import { Injectable } from '@angular/core';
 import { Session } from '../entities/interfaces';
 import { RestService } from './rest.service';
 
-// Session-Service 
+// Service that holds the session and persists it
 @Injectable()
 export class SessionService {
 
+    // Session object
     private session: Session;
 
-    // Konstruktor
-    //  - enthält RestService
-    //  - läd die Session aus dem Local-Storage
-    constructor(private restService: RestService) {
+    // Load session object from local storage
+    constructor() {
         const sessionJson = localStorage.getItem('session');
         if (sessionJson) {
             try {
@@ -22,24 +21,24 @@ export class SessionService {
         }
     }
 
-    // Überprüfung, ob Session vorhanden ist
+    // Is there a session object?
     public hasSession(): boolean {
         return this.session !== null && this.session !== undefined;
     }
 
-    // Setze den Session-Parameter und im Local Storage
+    // Set session object and persist it to the local storage
     public setSession(session: Session) {
         this.session = session;
         localStorage.setItem('session', JSON.stringify(session));
     }
 
-    // Entfernen des Session-Parameters und aus dem Local Storage
+    // Remove session object and remove the persisted object in the local storage
     public removeSession() {
         this.session = null;
         localStorage.removeItem('session');
     }
 
-    // Session laden
+    // Get Session
     public getSession(): Session {
         return this.session;
     }

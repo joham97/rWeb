@@ -26,7 +26,7 @@
             <td colspan="2">
               <table style="text-align: center">
                 <tr (click)="vote(entry, 1)">
-                  <td>
+                  <td class="clickable">
                     <img *ngIf="entry.yourvote == 1" src="assets/upvote-clicked.png" width="16px" height="16px">
                     <img *ngIf="entry.yourvote != 1" src="assets/upvote.png" width="16px" height="16px">
                   </td>
@@ -35,7 +35,7 @@
                   {{entry.upvotes - entry.downvotes}}
                 </tr>
                 <tr (click)="vote(entry, -1)">
-                  <td>
+                    <td class="clickable">
                     <img *ngIf="entry.yourvote == -1" src="assets/downvote-clicked.png" width="16px" height="16px">
                     <img *ngIf="entry.yourvote != -1" src="assets/downvote.png" width="16px" height="16px">
                   </td>

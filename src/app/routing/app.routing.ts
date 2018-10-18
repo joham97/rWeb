@@ -4,9 +4,11 @@ import { PostComponent } from '../post/post.component';
 import { Routes, RouterModule } from '@angular/router';
 import { RouteGuardService } from './route-guard.service';
 
+// Defining url routes with the component to display 
 const appRoutes: Routes = [
   {
     path: '',
+    // Use route guard to restrict the access to some routes, without being logged in
     canActivate: [RouteGuardService],
     redirectTo: '/r/krz',
     pathMatch: 'full'
@@ -34,4 +36,5 @@ const appRoutes: Routes = [
   }
 ];
 
+// Export routes
 export const AppRouting = RouterModule.forRoot(appRoutes, { useHash: true });
