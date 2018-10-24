@@ -63,12 +63,18 @@ export class HomeComponent implements OnInit {
   }
 
   // Make post image big
-  makeBig(post: Post) {
+  makeBig(post: Post, event: any) {
+    if(event){
+      event.stopPropagation();
+    }
     post.big = !post.big;
   }
 
   // Vote for a post
-  vote(post: Post, value: number) {
+  vote(post: Post, value: number, event: any) {
+    if(event){
+      event.stopPropagation();
+    }
     // Check if user is logged in
     if (this.sessionService.hasSession()) {
       // Is user wants to redo his vote
@@ -99,5 +105,11 @@ export class HomeComponent implements OnInit {
   // Navigate to post
   showPost(id: number) {
     this.router.navigate(['/r/krz/post/' + id]);
+  }
+
+  showUser(user: any, event: any) {
+    if(event){
+      event.stopPropagation();
+    }
   }
 }

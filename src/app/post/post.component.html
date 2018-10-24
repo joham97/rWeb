@@ -1,79 +1,81 @@
-<ng-container *ngIf="post">
-  <table>
-    <tr>
-      <div>
-        <table>
-          <tr>
-            <td *ngIf="post.path" style="width: 64px" (click)="makeBig(post)" class="zoomContainer">
-              <img [src]="post.path" style="max-width: 64px; max-height: 64px" class="zoomImage">
-              <div class="zoomOverlay">
-                <mat-icon *ngIf="!post.big" class="zoom">zoom_in</mat-icon>
-                <mat-icon *ngIf="post.big" class="zoom">zoom_out</mat-icon>
-              </div>
-            </td>
-            <td>
-              <table>
-                <tr>
-                  <a style="font-size: 24px;">
-                    {{post.title}}
-                  </a>
-                </tr>
-                <tr>
-                  von
-                  <a href="">{{post.user}}</a>
-                </tr>
-              </table>
-            </td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>
-              <p class="description">{{post.description}}</p>
-            </td>
-          </tr>
-          <tr *ngIf="post.big">
-            <td colspan="4">
-              <img [src]="post.path" (click)="makeBig(post)">
-            </td>
-          </tr>
-        </table>
-      </div>
-    </tr>
-  </table>
-  <table>
-    <tr>
-      <td>
-        Upvotes:
-      </td>
-      <td>
-        <a style="margin-left: 16px;">
-          {{post.upvotes}}
-        </a>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        Downvotes:
-      </td>
-      <td>
-        <a style="margin-left: 16px;">
-          {{post.downvotes}}
-        </a>
-      </td>
-    </tr>
-  </table>
-  <hr>
-  <table>
-    <tr>
-      <td>
-        Comments:
-      </td>
-      <td>
-        <a style="margin-left: 16px;">
-          {{post.comment.length}}
-        </a>
-      </td>
-    </tr>
-  </table>
-  <app-comment [comment]="post.comment" [reply]="true" [post]="true" [superId]="post.postId"></app-comment>
-</ng-container>
+<div *ngIf="post"class="page" width="100%">
+  <div class="post">
+    <table>
+      <tr>
+        <div>
+          <table>
+            <tr>
+              <td *ngIf="post.path" style="width: 64px" (click)="makeBig(post)" class="zoomContainer">
+                <img [src]="post.path" style="max-width: 64px; max-height: 64px" class="zoomImage">
+                <div class="zoomOverlay">
+                  <mat-icon *ngIf="!post.big" class="zoom">zoom_in</mat-icon>
+                  <mat-icon *ngIf="post.big" class="zoom">zoom_out</mat-icon>
+                </div>
+              </td>
+              <td>
+                <table>
+                  <tr>
+                    <a style="font-size: 24px;">
+                      {{post.title}}
+                    </a>
+                  </tr>
+                  <tr>
+                    von
+                    <a href="">{{post.user}}</a>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <p class="description">{{post.description}}</p>
+              </td>
+            </tr>
+            <tr *ngIf="post.big">
+              <td colspan="4">
+                <img [src]="post.path" (click)="makeBig(post)">
+              </td>
+            </tr>
+          </table>
+        </div>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td>
+          Upvotes:
+        </td>
+        <td>
+          <a style="margin-left: 16px;">
+            {{post.upvotes}}
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Downvotes:
+        </td>
+        <td>
+          <a style="margin-left: 16px;">
+            {{post.downvotes}}
+          </a>
+        </td>
+      </tr>
+    </table>
+    <hr>
+    <table>
+      <tr>
+        <td>
+          Comments:
+        </td>
+        <td>
+          <a style="margin-left: 16px;">
+            {{post.comment.length}}
+          </a>
+        </td>
+      </tr>
+    </table>
+    <app-comment [comment]="post.comment" [reply]="true" [post]="true" [superId]="post.postId"></app-comment>
+  </div>
+</div>

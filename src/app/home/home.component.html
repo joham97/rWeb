@@ -1,29 +1,24 @@
-<table>
-  <tr *ngFor="let post of data; let i = index">
+<div class="page">
+  <div *ngFor="let post of data; let i = index" class="post clickable" (click)="showPost(post.postId)" >
     <div>
-      <table>
+      <table width="100%">
         <tr>
-          <td>
-            <a style="font-size: 26px;">
-              {{i + 1}}
-            </a>
-          </td>
-          <td>
+          <td width="26px">
             <table style="text-align: center">
-              <tr (click)="vote(post, 1)" class="clickable">
-                <img *ngIf="post.yourvote == 1" src="assets/upvote-clicked.png" width="16px" height="16px">
-                <img *ngIf="post.yourvote != 1" src="assets/upvote.png" width="16px" height="16px">
+              <tr (click)="vote(post, 1, $event)" class="clickable">
+                <mat-icon *ngIf="post.yourvote != 1" class="voteButton">thumb_up</mat-icon>
+                <mat-icon *ngIf="post.yourvote == 1" style="color: #FFA953;" class="voteButton">thumb_up</mat-icon>
               </tr>
               <tr>
                 {{post.upvotes - post.downvotes}}
               </tr>
-              <tr (click)="vote(post, -1)" class="clickable">
-                <img *ngIf="post.yourvote == -1" src="assets/downvote-clicked.png" width="16px" height="16px">
-                <img *ngIf="post.yourvote != -1" src="assets/downvote.png" width="16px" height="16px">
+              <tr (click)="vote(post, -1, $event)" class="clickable">
+                <mat-icon *ngIf="post.yourvote != -1" class="voteButton">thumb_down</mat-icon>
+                <mat-icon *ngIf="post.yourvote == -1" style="color: #FFA953;" class="voteButton">thumb_down</mat-icon>
               </tr>
             </table>
           </td>
-          <td *ngIf="post.path" style="width: 64px" (click)="makeBig(post)" class="zoomContainer clickable">
+          <td *ngIf="post.path" style="width: 64px" (click)="makeBig(post, $event)" class="zoomContainer clickable">
             <img [src]="post.path" style="max-width: 64px; max-height: 64px" class="zoomImage">
             <div class="zoomOverlay">
               <mat-icon *ngIf="!post.big" class="zoom">zoom_in</mat-icon>
@@ -31,32 +26,28 @@
             </div>
           </td>
           <td>
-            <table>
+            <table width="100%">
               <tr>
-                <a style="font-size: 24px;" class="clickable" (click)="showPost(post.postId)">
+                <a style="font-size: 24px;">
                   {{post.title}}
                 </a>
               </tr>
               <tr>
                 von
-                <a href="">{{post.user}}</a>
+                <a (click)="showUser(post.user, $event)" class="link">{{post.user}}</a>
               </tr>
             </table>
           </td>
         </tr>
         <tr *ngIf="post.big">
-          <td>
-          </td>
-          <td>
-          </td>
           <td colspan="4">
-            <img [src]="post.path" (click)="makeBig(post)" class="clickable">
+            <img [src]="post.path" (click)="makeBig(post, $event)" class="clickable bigimage">
           </td>
         </tr>
       </table>
     </div>
-  </tr>
-</table>
+  </div>
+</div>
 <br>
 <a *ngIf="!loading && (!data || data.length == 0)" align="center" style="text-align:center; display:block; color: gray;">  
   No posts yet!

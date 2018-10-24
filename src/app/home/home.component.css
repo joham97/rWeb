@@ -11,9 +11,10 @@
   opacity: 1;
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
   transition: .5s ease;
   backface-visibility: hidden;
+  object-fit: cover;
 }
 
 .zoomOverlay {
@@ -40,4 +41,42 @@
   font-size: 50px;
   width: 50px;
   height: 50px;
+}
+
+.page {
+  padding: 16px;
+}
+
+.post {
+  margin-left: 1px;
+  margin-top: 1px;
+  margin-right: 1px;
+  padding-left: 6px;
+  padding-right: 6px;
+  border: 1px solid #d0d0d0;
+  background: #ffffff;
+}
+
+.post:hover {
+  border: 1px solid #a0a0a0;
+}
+
+.bigimage {
+  max-width: 800px;
+}
+
+.voteButton {
+  font-size: 20px;
+}
+
+.voteButton:hover {
+  color: rgb(238, 158, 79);
+}
+
+.link {
+  color: blue;
+}
+
+.link:hover {  
+  text-decoration: underline;
 }

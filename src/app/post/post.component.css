@@ -45,3 +45,14 @@
     white-space: pre-wrap; /* Chrome; W3C standard */
     word-wrap: break-word; /* IE */
 }
+
+.page {
+  padding: 16px;
+}
+
+.post {  
+  padding-left: 6px;
+  padding-right: 6px;
+  border: 1px solid #d0d0d0;
+  background: #ffffff;
+}
