@@ -3,6 +3,7 @@ export interface Post {
     title: string;
     description: string;
     path: string;
+    userId: number;
     user: string;
     upvotes: number;
     downvotes: number;

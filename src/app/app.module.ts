@@ -17,6 +17,7 @@ import { PostComponent } from './post/post.component';
 import { LoginComponent } from './login/login.component';
 import { AppComponent } from './app.component';
 import { CommentComponent } from './comment/comment.component';
+import { MatConfirmDialogComponent } from './mat-confirm-dialog/mat-confirm-dialog.component';
 
 // Services
 import { RestService } from './services/rest.service';
@@ -32,7 +33,8 @@ import { RouteGuardService } from './routing/route-guard.service';
     UploadComponent,
     PostComponent,
     LoginComponent,
-    CommentComponent
+    CommentComponent,
+    MatConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +58,8 @@ import { RouteGuardService } from './routing/route-guard.service';
     RouteGuardService
   ],
   entryComponents: [
-    LoginComponent
+    LoginComponent,
+    MatConfirmDialogComponent
   ],
   bootstrap: [AppComponent]
 })

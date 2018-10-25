@@ -119,6 +119,11 @@ export class RedditApiService {
     return this.rest.postRequest(this.BASEPATH + '/Comment' + this.getSessionKeyAsAttribute(), comment);
   }
 
+  // Request, that deletes a post
+  public deletePost(postId: number): Observable<Response> {
+    return this.rest.deleteRequest(this.BASEPATH + '/Post?postId=' + postId + this.getSessionKeyAsSingleAttribute(), {});
+  }
+
   // Request, that performs a vote for a post
   public vote(post: Post, value: number) {
     const body = {

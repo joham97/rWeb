@@ -7,6 +7,8 @@ import 'rxjs/add/observable/interval';
 import { Post, Response } from './../entities/interfaces';
 import { RedditApiService } from './../services/redditapi.service';
 import { SessionService } from '../services/session.service';
+import { MatDialog } from '@angular/material';
+import { MatConfirmDialogComponent } from '../mat-confirm-dialog/mat-confirm-dialog.component';
 
 // Displays home view
 @Component({
@@ -24,7 +26,7 @@ export class HomeComponent implements OnInit {
   // Update timer
   onUpdateTimer: Observable<number>;
 
-  constructor(private redditApi: RedditApiService, private sessionService: SessionService, private router: Router) { }
+  constructor(private redditApi: RedditApiService, private sessionService: SessionService, private router: Router, private dialog: MatDialog) { }
 
   // After component got initialized
   ngOnInit() {
@@ -64,7 +66,7 @@ export class HomeComponent implements OnInit {
 
   // Make post image big
   makeBig(post: Post, event: any) {
-    if(event){
+    if (event) {
       event.stopPropagation();
     }
     post.big = !post.big;
@@ -72,7 +74,7 @@ export class HomeComponent implements OnInit {
 
   // Vote for a post
   vote(post: Post, value: number, event: any) {
-    if(event){
+    if (event) {
       event.stopPropagation();
     }
     // Check if user is logged in
@@ -91,10 +93,10 @@ export class HomeComponent implements OnInit {
   // Algorithm to update the displayed data
   UpdateData(data: Post[], optional: boolean) {
     // Only if hard-update is requested or data length has changed
-    if(!optional || this.data.length < data.length){
+    if (!optional || this.data.length < data.length) {
       this.data = data;
       // If in dev-mode add image path prefix
-      if(isDevMode()){
+      if (isDevMode()) {
         this.data.forEach((e) => {
           e.path = "http://10.112.16.42/" + e.path;
         });
@@ -108,15 +110,45 @@ export class HomeComponent implements OnInit {
   }
 
   showUser(user: any, event: any) {
-    if(event){
+    if (event) {
       event.stopPropagation();
     }
     // TODO: Navigate to user
   }
 
-  stopPropagation(event: any) {    
-    if(event){
+  stopPropagation(event: any) {
+    if (event) {
       event.stopPropagation();
     }
+  }
+
+  copyLink(post: Post) {
+    const el = document.createElement('textarea');
+    el.value = "http://10.112.16.42/#/r/krz/post/" + post.postId;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+  }
+
+  isMyPost(post: Post): boolean {
+    return this.sessionService.hasSession() && this.sessionService.getSession().userId === post.userId;
+  }
+
+  deletePost(post: Post) {
+    this.dialog.open(MatConfirmDialogComponent, {
+      width: '390px',
+      disableClose: true,
+      position: { top: "80px" },
+      data: {
+        message: "Do you really want to delete this post?"
+      }
+    }).afterClosed().subscribe(res => {
+      if (res) {
+        this.redditApi.deletePost(post.postId).subscribe((res2) => {
+          this.loadData(false);
+        });
+      }
+    });
   }
 }
