@@ -1,5 +1,5 @@
 import { Component, OnInit, isDevMode } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { timer, Observable } from 'rxjs';
 import 'rxjs/add/observable/interval';
@@ -26,7 +26,10 @@ export class HomeComponent implements OnInit {
   // Update timer
   onUpdateTimer: Observable<number>;
 
-  constructor(private redditApi: RedditApiService, private sessionService: SessionService, private router: Router, private dialog: MatDialog) { }
+  userId: number;
+
+  constructor(private redditApi: RedditApiService, private sessionService: SessionService, private router: Router, private route: ActivatedRoute,
+    private dialog: MatDialog) { }
 
   // After component got initialized
   ngOnInit() {
@@ -38,26 +41,36 @@ export class HomeComponent implements OnInit {
     this.redditApi.loggedOut.subscribe(() => {
       this.loadData(true);
     });
-    // Reload data on each 5 seconds
-    this.onUpdateTimer = timer(0, 5000);
-    this.onUpdateTimer.subscribe(() => {
-      this.loadData(true);
-    });
+    
+    this.route.params.subscribe(params => {
+      this.userId = params.userId;
+      // Reload data on each 5 seconds
+      this.onUpdateTimer = timer(0, 5000);
+      this.onUpdateTimer.subscribe(() => {
+        this.loadData(true);
+      });
+    };
   }
 
   // Loading posts from api
   loadData(optional?: boolean) {
     this.loading = true;
     // Differentiate between hot and new 
-    if (this.router.url === '/r/krz/hot') {
+    if (this.router.url === '/r/krz') {
       // Grab hot posts from api
+      this.redditApi.getNewPosts().subscribe((res: Response) => {
+        this.UpdateData(res.data, optional);
+        this.loading = false;
+      });
+    } else if (this.router.url === '/r/krz/hot') {
+      // Grab new posts from api
       this.redditApi.getHotPosts().subscribe((res: Response) => {
         this.UpdateData(res.data, optional);
         this.loading = false;
       });
-    } else if (this.router.url === '/r/krz') {
-      // Grab new posts from api
-      this.redditApi.getNewPosts().subscribe((res: Response) => {
+    } else if (this.router.url.startsWith('/r/krz/user')) {
+      // Grab user posts from api
+      this.redditApi.getUserPosts(this.userId).subscribe((res: Response) => {
         this.UpdateData(res.data, optional);
         this.loading = false;
       });
@@ -109,11 +122,9 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/r/krz/post/' + id]);
   }
 
-  showUser(user: any, event: any) {
-    if (event) {
-      event.stopPropagation();
-    }
-    // TODO: Navigate to user
+  showUser(userId: number, event: any) {
+    this.stopPropagation(event);
+    this.router.navigate(['/r/krz/user/' + userId]);
   }
 
   stopPropagation(event: any) {

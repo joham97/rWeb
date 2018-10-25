@@ -18,7 +18,7 @@
             <div *ngIf="isLoggedIn()">
                 <a class="clickable" [matMenuTriggerFor]="menu3">{{loggedInUser.username}}</a>
                 <mat-menu #menu3="matMenu">
-                    <button mat-menu-item (click)="myPosts()">My Posts</button>
+                    <button mat-menu-item (click)="showMyPosts()">My Posts</button>
                     <button mat-menu-item (click)="logout()">Logout</button>
                 </mat-menu>
             </div>

@@ -22,6 +22,10 @@ const appRoutes: Routes = [
     component: HomeComponent
   },
   {
+    path: 'r/krz/user/:userId',
+    component: HomeComponent
+  },
+  {
     path: 'r/krz/post/:id',
     component: PostComponent
   },

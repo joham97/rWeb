@@ -39,6 +39,10 @@ export class RedditApiService {
   public getHotPosts(): Observable<Response> {
     return this.rest.getRequest(this.BASEPATH + '/Posts?type=hot' + this.getSessionKeyAsSingleAttribute());
   }
+  // Request, that grabs the hot posts
+  public getUserPosts(userId: number): Observable<Response> {
+    return this.rest.getRequest(this.BASEPATH + '/Posts?type=user&userId=' + userId + this.getSessionKeyAsSingleAttribute());
+  }
 
   // Request, that performs the login
   public login(username: string, password: string) {

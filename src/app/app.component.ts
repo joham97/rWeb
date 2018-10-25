@@ -100,4 +100,10 @@ export class AppComponent {
     this.router.navigate(['/r/krz/hot']);
   }
 
+  showMyPosts() {
+    if(this.loggedInUser) {
+      this.router.navigate(['/r/krz/user/' + this.loggedInUser.userId]);
+    }
+  }
+
 }
