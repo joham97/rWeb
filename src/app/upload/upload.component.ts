@@ -48,7 +48,7 @@ export class UploadComponent implements OnInit {
     // Perform upload api call
     this.redditApi.upload(file).subscribe((res: any) => {
       // Get path from result to show a preview of the image
-      this.previewPath = res.data.path;
+      this.previewPath = res.data.path;      
       // End uploading phase 
       this.isUploadingImage = false;
     });  
@@ -75,5 +75,9 @@ export class UploadComponent implements OnInit {
         this.router.navigate(['/r/krz']);
       });
     }
+  }
+
+  removeImage() {
+    this.previewPath = null;
   }
 }
