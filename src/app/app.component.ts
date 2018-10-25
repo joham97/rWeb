@@ -20,9 +20,8 @@ export class AppComponent {
   // Currently logged in user
   loggedInUser: User;
 
-
   // which page is currently opened
-  pageShown: PageShown = PageShown.new;
+  pageShown: number = 0;
 
   // Version of the application
   version: any = "x.x.x";
@@ -36,11 +35,13 @@ export class AppComponent {
         const navevent = event as NavigationEnd;
         // Grab which page is shown and store it in this.pageShown
         if (navevent.urlAfterRedirects === '/r/krz/hot') {
-          this.pageShown = PageShown.hot;
+          this.pageShown = 2;
         } else if (navevent.urlAfterRedirects === '/r/krz') {
-          this.pageShown = PageShown.new;
+          this.pageShown = 1;
         } else if (navevent.urlAfterRedirects === '/r/krz/upload') {
-          this.pageShown = PageShown.upload;
+          this.pageShown = 3;
+        } else {
+          this.pageShown = 0;
         }
       }
     });

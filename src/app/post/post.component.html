@@ -1,4 +1,4 @@
-<div *ngIf="post"class="page" width="100%">
+<div *ngIf="post" class="page" width="100%">
   <div class="post">
     <table>
       <tr>
@@ -34,7 +34,7 @@
             </tr>
             <tr *ngIf="post.big">
               <td colspan="4">
-                <img [src]="post.path" (click)="makeBig(post)">
+                <img [src]="post.path" (click)="makeBig(post)" class="clickable bigimage">
               </td>
             </tr>
           </table>

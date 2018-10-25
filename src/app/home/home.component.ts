@@ -111,5 +111,12 @@ export class HomeComponent implements OnInit {
     if(event){
       event.stopPropagation();
     }
+    // TODO: Navigate to user
+  }
+
+  stopPropagation(event: any) {    
+    if(event){
+      event.stopPropagation();
+    }
   }
 }

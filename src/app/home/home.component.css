@@ -55,6 +55,7 @@
   padding-right: 6px;
   border: 1px solid #d0d0d0;
   background: #ffffff;
+  border-radius: 4px;
 }
 
 .post:hover {
@@ -79,4 +80,12 @@
 
 .link:hover {  
   text-decoration: underline;
+}
+
+.more {
+  opacity: 0.0;
+}
+
+.post:hover .more {
+  opacity: 1.0;
 }

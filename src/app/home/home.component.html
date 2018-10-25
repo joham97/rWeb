@@ -1,5 +1,5 @@
 <div class="page">
-  <div *ngFor="let post of data; let i = index" class="post clickable" (click)="showPost(post.postId)" >
+  <div *ngFor="let post of data; let i = index" class="post clickable" (click)="showPost(post.postId)">
     <div>
       <table width="100%">
         <tr>
@@ -28,9 +28,30 @@
           <td>
             <table width="100%">
               <tr>
-                <a style="font-size: 24px;">
-                  {{post.title}}
-                </a>
+                <td>
+                  <a style="font-size: 24px;">
+                    {{post.title}}
+                  </a>
+                </td>
+                <td width="24px">
+                  <button mat-icon-button [matMenuTriggerFor]="menu" (click)="stopPropagation($event)" class="more">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item>
+                      <mat-icon>dialpad</mat-icon>
+                      <span>Redial</span>
+                    </button>
+                    <button mat-menu-item disabled>
+                      <mat-icon>voicemail</mat-icon>
+                      <span>Check voicemail</span>
+                    </button>
+                    <button mat-menu-item>
+                      <mat-icon>notifications_off</mat-icon>
+                      <span>Disable alerts</span>
+                    </button>
+                  </mat-menu>
+                </td>
               </tr>
               <tr>
                 von
@@ -49,6 +70,6 @@
   </div>
 </div>
 <br>
-<a *ngIf="!loading && (!data || data.length == 0)" align="center" style="text-align:center; display:block; color: gray;">  
+<a *ngIf="!loading && (!data || data.length == 0)" align="center" style="text-align:center; display:block; color: gray;">
   No posts yet!
 </a>

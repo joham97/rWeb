@@ -4,12 +4,12 @@
             <a>/r/krz {{version}}</a>
         </li>
         <li>
-            <a *ngIf="new" style="background: #FF8933;">New</a>
-            <a *ngIf="!new" class="clickable" style="cursor: pointer;"  (click)="newPage()">New</a>
+            <a *ngIf="pageShown === 1" style="background: #FF8933;">New</a>
+            <a *ngIf="pageShown !== 1" class="clickable" style="cursor: pointer;" (click)="newPage()">New</a>
         </li>
         <li>
-            <a *ngIf="hot" style="background: #FF8933;">Hot</a>
-            <a *ngIf="!hot" class="clickable" style="cursor: pointer;" (click)="hotPage()">Hot</a>
+            <a *ngIf="pageShown === 2" style="background: #FF8933;">Hot</a>
+            <a *ngIf="pageShown !== 2" class="clickable" style="cursor: pointer;" (click)="hotPage()">Hot</a>
         </li>
         <li style="float: right;">
             <div *ngIf="!isLoggedIn()">
@@ -25,10 +25,12 @@
         </li>
         <li style="float: right;" (click)="upload()">
             <div *ngIf="isLoggedIn()">
-                <a *ngIf="uploadPage" style="background: #FF8933;">Upload</a>
-                <a *ngIf="!uploadPage" class="clickable">Upload</a>
+                <a *ngIf="pageShown === 3" style="background: #FF8933;">Upload</a>
+                <a *ngIf="pageShown !== 3" class="clickable">Upload</a>
             </div>
         </li>
     </div>
 </ul>
-<router-outlet></router-outlet>
+<div class="content">
+    <router-outlet></router-outlet>
+</div>
