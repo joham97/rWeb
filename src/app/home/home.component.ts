@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit {
       this.onUpdateTimer.subscribe(() => {
         this.loadData(true);
       });
-    };
+    });
   }
 
   // Loading posts from api
