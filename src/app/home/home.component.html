@@ -64,6 +64,11 @@
       </table>
     </div>
   </div>
+  
+  <div *ngIf="data.length > 0" class="loadmore" align="center" width="100%">
+    <button *ngIf="!loading" mat-raised-button style="background-color: #FFA953; color: white;" (click)="loadNext15Posts()">Load more</button>
+    <button *ngIf="loading" mat-raised-button style="background-color: rgb(255, 223, 191); color: white; cursor: default;">Loading...</button>
+  </div>
 </div>
 <br>
 <a *ngIf="!loading && (!data || data.length == 0)" align="center" style="text-align:center; display:block; color: gray;">

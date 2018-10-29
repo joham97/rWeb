@@ -26,7 +26,11 @@ export class HomeComponent implements OnInit {
   // Update timer
   onUpdateTimer: Observable<number>;
 
+  // User id from query param
   userId: number;
+
+  // Current limit
+  postLimit: number = 0;
 
   constructor(private redditApi: RedditApiService, private sessionService: SessionService, private router: Router, private route: ActivatedRoute,
     private dialog: MatDialog) { }
@@ -41,37 +45,44 @@ export class HomeComponent implements OnInit {
     this.redditApi.loggedOut.subscribe(() => {
       this.loadData(true);
     });
-    
+
+    // Load query params like the userId
     this.route.params.subscribe(params => {
       this.userId = params.userId;
-      // Reload data on each 5 seconds
-      this.onUpdateTimer = timer(0, 5000);
-      this.onUpdateTimer.subscribe(() => {
-        this.loadData(true);
-      });
+      this.loadData(true);
+    });
+
+    // Set what happens if window is getting scrolled 
+    window.onscroll = ((event) => {
+      this.onScroll(event);
     });
   }
 
+  loadNext15Posts() {
+    this.postLimit += 15;
+    this.loadData(false);
+  }
+
   // Loading posts from api
-  loadData(optional?: boolean) {
+  loadData(reload: boolean) {
     this.loading = true;
     // Differentiate between hot and new 
     if (this.router.url === '/r/krz') {
       // Grab hot posts from api
-      this.redditApi.getNewPosts().subscribe((res: Response) => {
-        this.UpdateData(res.data, optional);
+      this.redditApi.getNewPosts(this.postLimit).subscribe((res: Response) => {
+        this.UpdateData(res.data, reload);
         this.loading = false;
       });
     } else if (this.router.url === '/r/krz/hot') {
       // Grab new posts from api
-      this.redditApi.getHotPosts().subscribe((res: Response) => {
-        this.UpdateData(res.data, optional);
+      this.redditApi.getHotPosts(this.postLimit).subscribe((res: Response) => {
+        this.UpdateData(res.data, reload);
         this.loading = false;
       });
     } else if (this.router.url.startsWith('/r/krz/user')) {
       // Grab user posts from api
-      this.redditApi.getUserPosts(this.userId).subscribe((res: Response) => {
-        this.UpdateData(res.data, optional);
+      this.redditApi.getUserPosts(this.postLimit, this.userId).subscribe((res: Response) => {
+        this.UpdateData(res.data, reload);
         this.loading = false;
       });
     }
@@ -98,22 +109,30 @@ export class HomeComponent implements OnInit {
       }
       // Call api to vote post
       this.redditApi.vote(post, value).subscribe((res) => {
-        this.loadData();
+        // Update voting data
+        const index = this.data.findIndex(p => p.postId === res.data.postId);
+        this.data[index].upvotes = res.data.upvotes;
+        this.data[index].downvotes = res.data.downvotes;
+        this.data[index].yourvote = res.data.yourvote;
+        console.log(this.data[index].yourvote);
       });
     }
   }
 
   // Algorithm to update the displayed data
-  UpdateData(data: Post[], optional: boolean) {
-    // Only if hard-update is requested or data length has changed
-    if (!optional || this.data.length < data.length) {
-      this.data = data;
-      // If in dev-mode add image path prefix
-      if (isDevMode()) {
-        this.data.forEach((e) => {
+  UpdateData(data: Post[], reload: boolean) {
+    // If in dev-mode add image path prefix
+    if (isDevMode()) {
+      data.forEach((e) => {
+        if(e.path && e.path.length > 0) {
           e.path = "http://10.112.16.42/" + e.path;
-        });
-      }
+        }
+      });
+    }
+    if(reload) {
+      this.data = data;
+    } else {
+      data.forEach(d => this.data.push(d));
     }
   }
 
@@ -157,9 +176,22 @@ export class HomeComponent implements OnInit {
     }).afterClosed().subscribe(res => {
       if (res) {
         this.redditApi.deletePost(post.postId).subscribe((res2) => {
-          this.loadData(false);
+          // Remove post entry
+          this.data.splice(this.data.findIndex(p => p.postId === res.data.postId), 1);
         });
       }
     });
+  }
+
+  onScroll(event: any) {
+    if(this.data.length > 0 && !this.loading) {
+      var pageHeight = document.documentElement.offsetHeight;
+      var windowHeight = window.innerHeight;
+      var scrollPosition = window.scrollY || window.pageYOffset || document.body.scrollTop + (document.documentElement && document.documentElement.scrollTop || 0);
+
+      if (pageHeight <= windowHeight + scrollPosition) {
+        this.loadNext15Posts();
+      }
+    }
   }
 }

@@ -32,16 +32,16 @@ export class RedditApiService {
   }
 
   // Request, that grabs the new posts
-  public getNewPosts(): Observable<Response> {
-    return this.rest.getRequest(this.BASEPATH + '/Posts?type=new' + this.getSessionKeyAsSingleAttribute());
+  public getNewPosts(limit: number): Observable<Response> {
+    return this.rest.getRequest(this.BASEPATH + '/Posts?type=new&limit=' + limit + this.getSessionKeyAsSingleAttribute());
   }
   // Request, that grabs the hot posts
-  public getHotPosts(): Observable<Response> {
-    return this.rest.getRequest(this.BASEPATH + '/Posts?type=hot' + this.getSessionKeyAsSingleAttribute());
+  public getHotPosts(limit: number): Observable<Response> {
+    return this.rest.getRequest(this.BASEPATH + '/Posts?type=hot&limit=' + limit + this.getSessionKeyAsSingleAttribute());
   }
   // Request, that grabs the hot posts
-  public getUserPosts(userId: number): Observable<Response> {
-    return this.rest.getRequest(this.BASEPATH + '/Posts?type=user&userId=' + userId + this.getSessionKeyAsSingleAttribute());
+  public getUserPosts(limit: number, userId: number): Observable<Response> {
+    return this.rest.getRequest(this.BASEPATH + '/Posts?type=user&userId=' + userId  + '&limit=' + limit + this.getSessionKeyAsSingleAttribute());
   }
 
   // Request, that performs the login
